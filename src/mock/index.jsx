@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useIntl } from "umi";
+import { history,
+  useIntl } from "umi";
 import { connect } from "dva";
 import { Button, Select, message } from "antd";
 import Table from "@/components/DefaultTable";
@@ -210,7 +211,11 @@ const AccessMange = (props) => {
             {intl.formatMessage({ id: "pages.systemSettings.module" })}:
           </span>
           <Select style={{ width: 180 }}>
-            <SelectOption value="">活动营销</SelectOption>
+            <SelectOption value="我是中文">
+              活动营销
+              <span>hahah</span>
+              <span>我是中文</span>
+            </SelectOption>
           </Select>
         </div>
       </div>
