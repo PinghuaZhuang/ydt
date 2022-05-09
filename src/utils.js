@@ -1,5 +1,5 @@
-import path from 'path'
+import path from "path";
 
 export function resolve(url) {
-  return path.resolve()
+  return path.resolve();
 }
