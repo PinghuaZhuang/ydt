@@ -8,10 +8,5 @@
         "regenerator": false
       }
     ]
-  ],
-  "env": {
-    "test": {
-      "plugins": ["istanbul"]
-    }
-  }
+  ]
 }

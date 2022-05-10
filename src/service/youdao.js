@@ -52,6 +52,6 @@ export default function youdao(options) {
   return axios
     .get(`https://openapi.youdao.com/api?${qs.stringify(data)}`)
     .then((result) => {
-      parse(result, data);
+      return parse(result, data);
     });
 }
