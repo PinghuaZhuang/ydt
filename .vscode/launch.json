@@ -16,13 +16,24 @@
         // "--inspect-brk"
       ]
     },
-
     {
       "type": "node",
       "request": "launch",
       "name": "node-babel",
       "program": "${file}",
       "runtimeExecutable": "babel-node",
+      // "protocol": "inspector",
+      "args": [
+        // "--inspect"
+        // "--inspect-brk"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "node",
+      "program": "${file}",
+      "runtimeExecutable": "node",
       // "protocol": "inspector",
       "args": [
         // "--inspect"
