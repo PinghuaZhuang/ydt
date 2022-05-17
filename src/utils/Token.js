@@ -1,9 +1,9 @@
-import merge from "lodash/merge";
+import merge from 'lodash/merge';
 import youdao from '../service/youdao';
 
 const defaultOptions = {
-  to: "en",
-  translateService: "youdao",
+  to: 'en',
+  translateService: 'youdao',
 };
 
 class Token {

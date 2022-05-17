@@ -1,20 +1,20 @@
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
 
-const rnothtmlwhite = /[^\x20\t\r\n\f]+/
+const rnothtmlwhite = /[^\x20\t\r\n\f]+/;
 // const reg = /(?<quotes>'|"|`).*?(?<content>[\u4e00-\u9fa5]+).*\k<quotes>/g
-const reg = /(?<quotes>'|"|`).*?(?<content>[\u4e00-\u9fa5].*?)\k<quotes>/g
-const reg2 = /(?<left>\>).*?(?<content>[\u4e00-\u9fa5].*?)(?<right>\<)/g
-const zn = /(?<before>\/\/\x20)(?<content>[\u4e00-\u9fa5]+)/g
-const quotes = /'|"|`/
+const reg = /(?<quotes>'|"|`).*?(?<content>[\u4e00-\u9fa5].*?)\k<quotes>/g;
+const reg2 = /(?<left>\>).*?(?<content>[\u4e00-\u9fa5].*?)(?<right>\<)/g;
+const zn = /(?<before>\/\/\x20)(?<content>[\u4e00-\u9fa5]+)/g;
+const quotes = /'|"|`/;
 
 function resolve(url) {
   return path.resolve(__dirname, url);
 }
 
-const file = fs.readFileSync(resolve("./mock/index.jsx"), {
+const file = fs.readFileSync(resolve('./mock/index.jsx'), {
   encoding: 'utf8',
-})/* .then((file) => {
+});/* .then((file) => {
   debugger;
   console.log("file:", file);
 }); */
@@ -63,7 +63,7 @@ const file = fs.readFileSync(resolve("./mock/index.jsx"), {
 // debugger
 
 const hasIntl = /import\s+\{[\s\S]*useIntl[\s\S]*\}\s+from\s+(?<quotes>['|"])umi\k<quotes>/.test(file);
-debugger
+debugger;
 
 // import { useIntl } from "umi";
 /**

@@ -1,20 +1,20 @@
-import extend from "lodash/merge";
+import extend from 'lodash/merge';
 
 const rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
-const indexOf = [].indexOf;
+const { indexOf } = [];
 
-let class2type = {};
+const class2type = {};
 
-const toString = class2type.toString;
+const { toString } = class2type;
 
 export const types =
-  "Boolean Number String Function Array Date RegExp Object Error Symbol".match(
+  'Boolean Number String Function Array Date RegExp Object Error Symbol'.match(
     rnothtmlwhite
   );
 
-let i = 0,
-  len = types.length,
-  name;
+let i = 0;
+let len = types.length;
+let name;
 
 for (; i < len; i++) {
   name = types[i];
@@ -22,8 +22,8 @@ for (; i < len; i++) {
 }
 
 export function each(obj, callback) {
-  let length,
-    i = 0;
+  let length;
+  let i = 0;
 
   if (isArrayLike(obj)) {
     length = obj.length;
@@ -48,7 +48,7 @@ export function isWindow(obj) {
 }
 
 export function isFunction(x) {
-  return type(x) === "function";
+  return type(x) === 'function';
 }
 
 export function isArrayLike(obj) {
@@ -56,23 +56,23 @@ export function isArrayLike(obj) {
   // `in` check used to prevent JIT error (gh-2145)
   // hasOwn isn't used here due to false negatives
   // regarding Nodelist length in IE
-  var length = !!obj && "length" in obj && obj.length,
-    objType = type(obj);
+  let length = !!obj && 'length' in obj && obj.length;
+  var objType = type(obj);
 
   if (isFunction(obj) || isWindow(obj)) {
     return false;
   }
 
   return (
-    objType === "array" ||
+    objType === 'array' ||
     length === 0 ||
-    (typeof length === "number" && length > 0 && length - 1 in obj)
+    (typeof length === 'number' && length > 0 && length - 1 in obj)
   );
 }
 
 export function createOptions(options) {
-  let object = {};
-  each(options.match(rnothtmlwhite) || [], function (_, flag) {
+  const object = {};
+  each(options.match(rnothtmlwhite) || [], (_, flag) => {
     object[flag] = true;
   });
   return object;
@@ -80,12 +80,12 @@ export function createOptions(options) {
 
 function type(obj) {
   if (obj == null) {
-    return obj + "";
+    return `${obj}`;
   }
 
   // Support: Android <=2.3 only (functionish RegExp)
-  return typeof obj === "object" || typeof obj === "function"
-    ? class2type[toString.call(obj)] || "object"
+  return typeof obj === 'object' || typeof obj === 'function'
+    ? class2type[toString.call(obj)] || 'object'
     : typeof obj;
 }
 
@@ -111,175 +111,175 @@ export default function (options) {
   // Convert options from String-formatted to Object-formatted if needed
   // (we check in cache first)
   options =
-    typeof options === "string" ? createOptions(options) : extend({}, options);
+    typeof options === 'string' ? createOptions(options) : extend({}, options);
 
   var // Flag to know if list is currently firing
-    firing,
-    // Last fire value for non-forgettable lists
-    memory,
-    // Flag to know if list was already fired
-    fired,
-    // Flag to prevent firing
-    locked,
-    // Actual callback list
-    list = [],
-    // Queue of execution data for repeatable lists
-    queue = [],
-    // Index of currently firing callback (modified by add/remove as needed)
-    firingIndex = -1,
-    // Fire callbacks
-    fire = function () {
-      // Enforce single-firing
-      locked = locked || options.once;
+    firing;
+  // Last fire value for non-forgettable lists
+  var memory;
+  // Flag to know if list was already fired
+  var fired;
+  // Flag to prevent firing
+  var locked;
+  // Actual callback list
+  var list = [];
+  // Queue of execution data for repeatable lists
+  var queue = [];
+  // Index of currently firing callback (modified by add/remove as needed)
+  var firingIndex = -1;
+  // Fire callbacks
+  var fire = function () {
+    // Enforce single-firing
+    locked = locked || options.once;
 
-      // Execute callbacks for all pending executions,
-      // respecting firingIndex overrides and runtime changes
-      fired = firing = true;
-      for (; queue.length; firingIndex = -1) {
-        memory = queue.shift();
-        while (++firingIndex < list.length) {
-          // Run callback and check for early termination
-          if (
-            list[firingIndex].apply(memory[0], memory[1]) === false &&
-            options.stopOnFalse
-          ) {
-            // Jump to end and forget the data so .add doesn't re-fire
-            firingIndex = list.length;
-            memory = false;
-          }
+    // Execute callbacks for all pending executions,
+    // respecting firingIndex overrides and runtime changes
+    fired = firing = true;
+    for (; queue.length; firingIndex = -1) {
+      memory = queue.shift();
+      while (++firingIndex < list.length) {
+        // Run callback and check for early termination
+        if (
+          list[firingIndex].apply(memory[0], memory[1]) === false &&
+          options.stopOnFalse
+        ) {
+          // Jump to end and forget the data so .add doesn't re-fire
+          firingIndex = list.length;
+          memory = false;
         }
       }
+    }
 
-      // Forget the data if we're done with it
-      if (!options.memory) {
-        memory = false;
+    // Forget the data if we're done with it
+    if (!options.memory) {
+      memory = false;
+    }
+
+    firing = false;
+
+    // Clean up if we're done firing for good
+    if (locked) {
+      // Keep an empty list if we have data for future add calls
+      if (memory) {
+        list = [];
+
+        // Otherwise, this object is spent
+      } else {
+        list = '';
       }
-
-      firing = false;
-
-      // Clean up if we're done firing for good
-      if (locked) {
-        // Keep an empty list if we have data for future add calls
-        if (memory) {
-          list = [];
-
-          // Otherwise, this object is spent
-        } else {
-          list = "";
+    }
+  };
+  // Actual Callbacks object
+  var self = {
+    // Add a callback or a collection of callbacks to the list
+    add(...rest) {
+      if (list) {
+        // If we have memory from a past run, we should fire after adding
+        if (memory && !firing) {
+          firingIndex = list.length - 1;
+          queue.push(memory);
         }
-      }
-    },
-    // Actual Callbacks object
-    self = {
-      // Add a callback or a collection of callbacks to the list
-      add: function (...rest) {
-        if (list) {
-          // If we have memory from a past run, we should fire after adding
-          if (memory && !firing) {
-            firingIndex = list.length - 1;
-            queue.push(memory);
-          }
 
-          (function add(args) {
-            each(args, function (_, arg) {
-              if (isFunction(arg)) {
-                if (!options.unique || !self.has(arg)) {
-                  list.push(arg);
-                }
-              } else if (arg && arg.length && type(arg) !== "string") {
-                // Inspect recursively
-                add(arg);
+        (function add(args) {
+          each(args, function (_, arg) {
+            if (isFunction(arg)) {
+              if (!options.unique || !self.has(arg)) {
+                list.push(arg);
               }
-            });
-          })(rest);
-
-          if (memory && !firing) {
-            fire();
-          }
-        }
-        return this;
-      },
-
-      // Remove a callback from the list
-      remove: function (...rest) {
-        each(rest, function (_, arg) {
-          var index;
-          while ((index = inArray(arg, list, index)) > -1) {
-            list.splice(index, 1);
-
-            // Handle firing indexes
-            if (index <= firingIndex) {
-              firingIndex--;
+            } else if (arg && arg.length && type(arg) !== 'string') {
+              // Inspect recursively
+              add(arg);
             }
-          }
-        });
-        return this;
-      },
+          });
+        })(rest);
 
-      // Check if a given callback is in the list.
-      // If no argument is given, return whether or not list has callbacks attached.
-      has: function (fn) {
-        return fn ? inArray(fn, list) > -1 : list.length > 0;
-      },
-
-      // Remove all callbacks from the list
-      empty: function () {
-        if (list) {
-          list = [];
+        if (memory && !firing) {
+          fire();
         }
-        return this;
-      },
+      }
+      return this;
+    },
 
-      // Disable .fire and .add
-      // Abort any current/pending executions
-      // Clear all callbacks and values
-      disable: function () {
-        locked = queue = [];
-        list = memory = "";
-        return this;
-      },
-      disabled: function () {
-        return !list;
-      },
+    // Remove a callback from the list
+    remove(...rest) {
+      each(rest, function (_, arg) {
+        var index;
+        while ((index = inArray(arg, list, index)) > -1) {
+          list.splice(index, 1);
 
-      // Disable .fire
-      // Also disable .add unless we have memory (since it would have no effect)
-      // Abort any pending executions
-      lock: function () {
-        locked = queue = [];
-        if (!memory && !firing) {
-          list = memory = "";
-        }
-        return this;
-      },
-      locked: function () {
-        return !!locked;
-      },
-
-      // Call all callbacks with the given context and arguments
-      fireWith: function (context, args) {
-        if (!locked) {
-          args = args || [];
-          args = [context, args.slice ? args.slice() : args];
-          queue.push(args);
-          if (!firing) {
-            fire();
+          // Handle firing indexes
+          if (index <= firingIndex) {
+            firingIndex--;
           }
         }
-        return this;
-      },
+      });
+      return this;
+    },
 
-      // Call all the callbacks with the given arguments
-      fire: function (...rest) {
-        self.fireWith(this, rest);
-        return this;
-      },
+    // Check if a given callback is in the list.
+    // If no argument is given, return whether or not list has callbacks attached.
+    has(fn) {
+      return fn ? inArray(fn, list) > -1 : list.length > 0;
+    },
 
-      // To know if the callbacks have already been called at least once
-      fired: function () {
-        return !!fired;
-      },
-    };
+    // Remove all callbacks from the list
+    empty() {
+      if (list) {
+        list = [];
+      }
+      return this;
+    },
+
+    // Disable .fire and .add
+    // Abort any current/pending executions
+    // Clear all callbacks and values
+    disable() {
+      locked = queue = [];
+      list = memory = '';
+      return this;
+    },
+    disabled() {
+      return !list;
+    },
+
+    // Disable .fire
+    // Also disable .add unless we have memory (since it would have no effect)
+    // Abort any pending executions
+    lock() {
+      locked = queue = [];
+      if (!memory && !firing) {
+        list = memory = '';
+      }
+      return this;
+    },
+    locked() {
+      return !!locked;
+    },
+
+    // Call all callbacks with the given context and arguments
+    fireWith(context, args) {
+      if (!locked) {
+        args = args || [];
+        args = [context, args.slice ? args.slice() : args];
+        queue.push(args);
+        if (!firing) {
+          fire();
+        }
+      }
+      return this;
+    },
+
+    // Call all the callbacks with the given arguments
+    fire(...rest) {
+      self.fireWith(this, rest);
+      return this;
+    },
+
+    // To know if the callbacks have already been called at least once
+    fired() {
+      return !!fired;
+    },
+  };
 
   return self;
 }

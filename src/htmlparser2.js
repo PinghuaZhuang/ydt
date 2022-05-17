@@ -1,6 +1,6 @@
-const htmlparser2 = require("htmlparser2");
+import htmlparser2 from 'htmlparser2';
 
-const map = {}
+const map = {};
 // let curTagName
 let count = 0;
 
@@ -8,42 +8,42 @@ const parser = new htmlparser2.Parser({
   onopentag(name, attributes) {
     map[name] = (map[name] ?? 0) + 1;
     count++;
-    console.log('======> onopentag', name)
-      /*
+    console.log('======> onopentag', name);
+    /*
        * This fires when a new tag is opened.
        *
        * If you don't need an aggregated `attributes` object,
        * have a look at the `onopentagname` and `onattribute` events.
        */
-      // if (name === "script" && attributes.type === "text/javascript") {
-      //     console.log("JS! Hooray!");
-      // }
+    // if (name === "script" && attributes.type === "text/javascript") {
+    //     console.log("JS! Hooray!");
+    // }
   },
   ontext(text) {
-      /*
+    /*
        * Fires whenever a section of text was processed.
        *
        * Note that this can fire at any point within text and you might
        * have to stich together multiple pieces.
        */
-      if (count > 0) {
-        console.log("-->", text);
-      }
+    if (count > 0) {
+      console.log('-->', text);
+    }
   },
   onclosetag(tagname) {
     map[tagname]--;
     count--;
-    console.log('<====== onclosetag', tagname)
-      /*
+    console.log('<====== onclosetag', tagname);
+    /*
        * Fires when a tag is closed.
        *
        * You can rely on this event only firing when you have received an
        * equivalent opening tag before. Closing tags without corresponding
        * opening tags will be ignored.
        */
-      // if (tagname === "script") {
-      //     console.log("That's it?!");
-      // }
+    // if (tagname === "script") {
+    //     console.log("That's it?!");
+    // }
   },
 });
 parser.write(

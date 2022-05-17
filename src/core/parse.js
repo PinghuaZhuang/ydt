@@ -1,11 +1,11 @@
-import fs from "fs";
-import path from "path";
-import partial from "lodash/partial";
-import * as parser from "@babel/parser";
-import traverse from "@babel/traverse";
+import fs from 'fs';
+import path from 'path';
+import partial from 'lodash/partial';
+import * as parser from '@babel/parser';
+import traverse from '@babel/traverse';
 // import t from "@babel/types";
-import Callbacks from "../utils/Callbacks";
-import Token from "../utils/Token";
+import Callbacks from '../utils/Callbacks';
+import Token from '../utils/Token';
 
 const rnothtmlwhite = /[\x20\t\r\n\f]+/;
 
@@ -34,20 +34,20 @@ function findFunction(tokens, path) {
       TemplateLiteral
       JSXText
       Literal`,
-      findZhCNString,
-      tokens
+    findZhCNString,
+    tokens
     )
   );
   path.skip();
 }
 
 function parse(filePath) {
-  const tokens = Callbacks("memory once"); // callbacks
+  const tokens = Callbacks('memory once'); // callbacks
   tokens.fire();
-  const content = fs.readFileSync(path.join(process.cwd(), filePath), "utf8");
+  const content = fs.readFileSync(path.join(process.cwd(), filePath), 'utf8');
 
   const ast = parser.parse(content, {
-    plugins: ["jsx"],
+    plugins: ['jsx'],
     allowImportExportEverywhere: true,
   });
 
@@ -60,7 +60,7 @@ function parse(filePath) {
     )
   );
 
-  console.log(tokens, "tokens");
+  console.log(tokens, 'tokens');
 }
 
-parse("src/mock/index.jsx");
+parse('src/mock/index.jsx');

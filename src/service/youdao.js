@@ -1,20 +1,20 @@
-import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
-import sha256 from "crypto-js/sha256";
-import encHex from "crypto-js/enc-hex";
-import qs from "qs";
-import merge from "lodash/merge";
-import lowerCase from "lodash/lowerCase";
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+import sha256 from 'crypto-js/sha256';
+import encHex from 'crypto-js/enc-hex';
+import qs from 'qs';
+import merge from 'lodash/merge';
+import lowerCase from 'lodash/lowerCase';
 
 // const appKey = "1b938c8ee553b3df";
 // const key = "onFkMmvTI2XaTiJPjcEeqOesScUK4Z3t";
 const appKey = process.env.YOUDAO_APPKEY;
 const key = process.env.YOUDAO_KEY;
 const defaultOptions = {
-  from: "en",
-  to: "zh-CHS",
+  from: 'en',
+  to: 'zh-CHS',
   appKey,
-  signType: "v3",
+  signType: 'v3',
   strict: true,
 };
 
@@ -37,7 +37,7 @@ function parse(result, { q }) {
 export default function youdao(options) {
   const curtime = Math.round(new Date().getTime() / 1000);
   const salt = uuidv4();
-  const q = typeof options === "string" ? options : options.q;
+  const q = typeof options === 'string' ? options : options.q;
   const signString = appKey + truncate(q) + salt + curtime + key;
   const data = merge(
     {
