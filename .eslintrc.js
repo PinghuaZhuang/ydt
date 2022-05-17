@@ -13,13 +13,14 @@ const globals = (() => {
 })();
 
 module.exports = {
-  extends: [require.resolve('@umijs/fabric/dist/eslint')],
+  extends: [
+    'alloy',
+  ],
   root: true,
   globals,
-  settings: {
-    react: {
-      version: '17.0.2',
-    },
+  env: {
+    node: true,
+    browser: true,
   },
   rules: {
     indent: [
@@ -100,6 +101,7 @@ module.exports = {
       },
     ],
     'new-parens': 2,
+    'no-eq-null': 0,
     'no-array-constructor': 2,
     'no-caller': 2,
     'no-console': 'off',

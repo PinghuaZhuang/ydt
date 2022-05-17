@@ -5,7 +5,7 @@ import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
 // import t from "@babel/types";
 import Callbacks from '../utils/Callbacks';
-import Token from '../utils/Token';
+// import Token from '../utils/Token';
 
 const rnothtmlwhite = /[\x20\t\r\n\f]+/;
 
@@ -22,8 +22,7 @@ function createVisitors(visitors, handle, ...args) {
 
 function findZhCNString(tokens, { node }) {
   const reg = /(?<content>[\u4e00-\u9fa5]+)/g;
-  let t;
-  while ((t = reg.exec(node.value))) {
+  while (reg.exec(node.value)) {
     tokens.add(() => console.count());
   }
 }

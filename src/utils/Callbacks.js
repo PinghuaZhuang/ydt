@@ -57,7 +57,7 @@ export function isArrayLike(obj) {
   // hasOwn isn't used here due to false negatives
   // regarding Nodelist length in IE
   let length = !!obj && 'length' in obj && obj.length;
-  var objType = type(obj);
+  let objType = type(obj);
 
   if (isFunction(obj) || isWindow(obj)) {
     return false;
@@ -113,22 +113,22 @@ export default function (options) {
   options =
     typeof options === 'string' ? createOptions(options) : extend({}, options);
 
-  var // Flag to know if list is currently firing
+  let // Flag to know if list is currently firing
     firing;
   // Last fire value for non-forgettable lists
-  var memory;
+  let memory;
   // Flag to know if list was already fired
-  var fired;
+  let fired;
   // Flag to prevent firing
-  var locked;
+  let locked;
   // Actual callback list
-  var list = [];
+  let list = [];
   // Queue of execution data for repeatable lists
-  var queue = [];
+  let queue = [];
   // Index of currently firing callback (modified by add/remove as needed)
-  var firingIndex = -1;
+  let firingIndex = -1;
   // Fire callbacks
-  var fire = function () {
+  let fire = function () {
     // Enforce single-firing
     locked = locked || options.once;
 
@@ -170,7 +170,7 @@ export default function (options) {
     }
   };
   // Actual Callbacks object
-  var self = {
+  const self = {
     // Add a callback or a collection of callbacks to the list
     add(...rest) {
       if (list) {
@@ -181,7 +181,7 @@ export default function (options) {
         }
 
         (function add(args) {
-          each(args, function (_, arg) {
+          each(args, (_, arg) => {
             if (isFunction(arg)) {
               if (!options.unique || !self.has(arg)) {
                 list.push(arg);
@@ -202,8 +202,8 @@ export default function (options) {
 
     // Remove a callback from the list
     remove(...rest) {
-      each(rest, function (_, arg) {
-        var index;
+      each(rest, (_, arg) => {
+        let index;
         while ((index = inArray(arg, list, index)) > -1) {
           list.splice(index, 1);
 
