@@ -8,6 +8,7 @@ const defaultOptions = {
 
 class Token {
   constructor(zh, options = {}) {
+    console.log(zh, '1111');
     this.literal = zh;
     this.options = merge({}, defaultOptions, options);
   }

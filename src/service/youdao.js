@@ -6,10 +6,10 @@ import qs from 'qs';
 import merge from 'lodash/merge';
 import lowerCase from 'lodash/lowerCase';
 
-// const appKey = "1b938c8ee553b3df";
-// const key = "onFkMmvTI2XaTiJPjcEeqOesScUK4Z3t";
-const appKey = process.env.YOUDAO_APPKEY;
-const key = process.env.YOUDAO_KEY;
+const appKey = '1b938c8ee553b3df';
+const key = 'onFkMmvTI2XaTiJPjcEeqOesScUK4Z3t';
+// const appKey = process.env.YOUDAO_APPKEY;
+// const key = process.env.YOUDAO_KEY;
 const defaultOptions = {
   from: 'en',
   to: 'zh-CHS',

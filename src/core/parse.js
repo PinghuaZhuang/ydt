@@ -4,8 +4,8 @@ import partial from 'lodash/partial';
 import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
 // import t from "@babel/types";
-import Callbacks from '../utils/Callbacks';
-// import Token from '../utils/Token';
+// import Callbacks from '../utils/Callbacks';
+import Token from '../utils/Token';
 
 const rnothtmlwhite = /[\x20\t\r\n\f]+/;
 
@@ -22,27 +22,28 @@ function createVisitors(visitors, handle, ...args) {
 
 function findZhCNString(tokens, { node }) {
   const reg = /(?<content>[\u4e00-\u9fa5]+)/g;
-  while (reg.exec(node.value)) {
-    tokens.add(() => console.count());
+  let t = {};
+  while ((t = reg.exec(node.value))) {
+    tokens.push(new Token(t?.groups.content));
   }
 }
 
 function findFunction(tokens, path) {
   path.traverse(
-    createVisitors(`
+    createVisitors(
+      `
       TemplateLiteral
       JSXText
       Literal`,
-    findZhCNString,
-    tokens
+      findZhCNString,
+      tokens
     )
   );
   path.skip();
 }
 
-function parse(filePath) {
-  const tokens = Callbacks('memory once'); // callbacks
-  tokens.fire();
+export default function parse(filePath) {
+  const tokens = [];
   const content = fs.readFileSync(path.join(process.cwd(), filePath), 'utf8');
 
   const ast = parser.parse(content, {
@@ -61,5 +62,3 @@ function parse(filePath) {
 
   console.log(tokens, 'tokens');
 }
-
-parse('src/mock/index.jsx');
